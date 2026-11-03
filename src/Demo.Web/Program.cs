@@ -1,4 +1,5 @@
-using Demo.Web.Data;
+using Demo.Infrastructure.Data;
+using Demo.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -7,7 +8,6 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.File("Logs/web-log-.log", rollingInterval: RollingInterval.Day)
     .CreateBootstrapLogger();
 
-
 try
 {
     var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +15,12 @@ try
     // Add services to the container.
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
         throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+    var migrationAssembly = typeof(ApplicationDbContext).Assembly;
+
+    #region DependencyInjection Configuration
+    builder.Services.AddInfrastructureDependency();
+    #endregion
 
     #region Serliog Configuration
 
@@ -26,8 +32,11 @@ try
 
     #endregion
 
-    builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlServer(connectionString));
+    #region DbContext Configuration
+
+    builder.Services.AddDbContext(connectionString, migrationAssembly);
+    #endregion
+
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
     builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -54,14 +63,15 @@ try
     app.UseAuthorization();
 
     app.MapStaticAssets();
+    app.UseStaticFiles();
 
     app.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}")
         .WithStaticAssets();
 
-    app.MapRazorPages()
-       .WithStaticAssets();
+    //app.MapRazorPages()
+    //   .WithStaticAssets();
 
     Log.Information("Application is starting");
 

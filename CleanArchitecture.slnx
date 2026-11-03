@@ -1,3 +1,6 @@
 <Solution>
+  <Project Path="src/Demo.Application/Demo.Application.csproj" Id="390ce65e-92e4-4489-95a5-0b2ac479f3da" />
+  <Project Path="src/Demo.Domain/Demo.Domain.csproj" Id="8f0cf58e-5cb8-4b15-a14e-010f1b659dd1" />
+  <Project Path="src/Demo.Infrastructure/Demo.Infrastructure.csproj" Id="cb7ab156-5b61-41f0-8fea-b190968de44d" />
   <Project Path="src/Demo.Web/Demo.Web.csproj" Id="8d555e94-706a-4ac0-8551-744104cff5b8" />
 </Solution>
