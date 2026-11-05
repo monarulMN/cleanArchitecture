@@ -1,5 +1,7 @@
+using Cortex.Mediator.DependencyInjection;
 using Demo.Infrastructure.Data;
 using Demo.Infrastructure.Extensions;
+using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -30,6 +32,18 @@ try
         .Enrich.FromLogContext()
         .ReadFrom.Configuration(context.Configuration));
 
+    #endregion
+
+    #region Cortex Mediator Configuration
+
+    builder.Services.AddCortexMediator(
+        new[] {typeof(Program)},
+        options => options.AddDefaultBehaviors());
+
+    #endregion
+
+    #region Mapster Configuration
+    builder.Services.AddMapster();
     #endregion
 
     #region DbContext Configuration
