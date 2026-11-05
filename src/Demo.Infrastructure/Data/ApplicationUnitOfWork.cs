@@ -1,0 +1,23 @@
+﻿using Demo.Application.Contracts;
+using Demo.Application.Contracts.Repositories;
+using Demo.Infrastructure.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Demo.Infrastructure.Data
+{
+    public class ApplicationUnitOfWork : UnitOfWork, IApplicationUnitOfWork
+    {
+        public IProductRepository ProductRepository { get; private set; }
+
+        public ApplicationUnitOfWork(ApplicationDbContext dbContext,
+            IProductRepository productRepository) : base(dbContext)
+        {
+            ProductRepository = productRepository;
+        }
+
+        
+    }
+}

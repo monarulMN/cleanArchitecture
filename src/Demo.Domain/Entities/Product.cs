@@ -8,5 +8,7 @@ namespace Demo.Domain.Entities
     public class Product : IAggregateRoot<Guid>
     {
         public Guid Id { get; set; }
+        public string Name { get; set; }
+        public decimal Price { get; set; }
     }
 }
